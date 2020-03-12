@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="container">
+      <h2 style="font-size:2vw;margin-top:20px;margin-bottom:20px;">Radius Service Status</h2>
+      <hr>
+      <a type="button" style="margin-left:10px" class="btn btn-info float-right" href="/rservice" >Refresh</a>
+      <a type="button" style="margin-left:10px" class="btn btn-info float-right" href="/rservice/restart" >Restart</a>
+      <a type="button" style="margin-left:10px" class="btn btn-info float-right" href="/rservice/start" >Start</a>
+      <a type="button" style="margin-left:10px" class="btn btn-info float-right" href="/rservice/stop" >Stop</a>
+       <a type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Radius service status</a>
+           <div id="demo" class="collapse">
+               <div style="margin-top:30px" class="card">
+                 <h5 class="card-header bg-secondary text-white">
+                    Radius service status
+                  </h5>
+                   <div class="card-body bg-light">
+                        {% for line in filecontent %}
+                            {% if 'home' in line%}
+                                <p style="color: red;font-weight: bold;">{{ line }}</p>
+                            {% else %}
+                                <p style="font-weight: bold;">{{ line }}</p>
+                            {% endif %}
+                        {% endfor %}
+                   </div>
+               </div>
+</div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+{% endblock %}

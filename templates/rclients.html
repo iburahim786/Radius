@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="container">
+<!--  <div style="margin-top:20px" class="card bg-secondary">-->
+    <h2 style="font-size:2vw;margin-top:20px">Radius Clients</h2>
+<!--  </div>-->
+    <hr>
+     <form action="/add_rclient" method="post" >
+        <div class="form-group">
+          <input type="text" placeholder="Client IP address / DNS name" name="rclient" id="rclient" class="form-control"
+                 style="width:300px;display:inline" value="" required="">
+          <input type="text" placeholder="password" name="rclntpwd" id="rclntpwd" class="form-control"
+                 style="width:300px;display:inline;margin-left:30px" value="" required="">
+          <button type="submit" title="Add user" style="margin-left:30px;height:35px;display:inline;margin-left:30px"
+                  class="btn btn-success"  value="Add">Add</button>
+        </div>
+     </form>
+     <font size="3">
+     <table class="table table-bordered data-table table-sm table-striped">
+    <thead >
+      <tr style="background: linear-gradient(to right, #056FF6 0%, #000000 100%);color:white;">
+        <th width="15px">S.No</th>
+        <th> Client </th>
+        <th width="200px"> Password </th>
+<!--        <th style="text-align:center" width="50px">Status</th>-->
+        <th style="text-align:center" width="100px">Action</th>
+      </tr>
+    </thead>
+       {% set count = [1] %}
+        {% for flist in flists %}
+            {% set slist = flist.split(' ') %}
+            <tr>
+                <td >{{ count }}</td>
+                <td >{{ slist[0] }}</td>
+                <td >{{ slist[1] }}</td>
+                 <td >
+                    <form style="text-align:center" >
+                        <a title="Delete client" href="delete_rclient/{{ slist[0] }}" style="color: inherit;padding-left:20px">
+                            <i class='fas fa-trash-alt' style='font-size:18px'></i></a>
+                    </form>
+                 </td>
+<!--                <td >{{ slist[3] }}</td>-->
+            </tr>
+          {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
+        {% endfor %}
+  </table></font>
+</div>
+{% endblock %}

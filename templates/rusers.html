@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="container">
+  <h2>Radius Users list</h2>
+    <hr>
+     <form action="/add_ruser" method="post" >
+        <div class="form-group">
+          <input type="text" placeholder="username" name="ruser" id="ruser" class="form-control"
+                 style="width:300px;display:inline" value="" required="">
+          <input type="text" placeholder="password" name="rusrpwd" id="rusrpwd" class="form-control"
+                 style="width:300px;display:inline;margin-left:30px" value="" required="">
+          <button type="submit" title="Add user" style="margin-left:30px;height:35px;display:inline;margin-left:30px"
+                  class="btn btn-success"  value="Add">Add</button>
+        </div>
+     </form>
+     <font size="3">
+     <table class="table table-bordered data-table table-sm table-striped">
+    <thead >
+      <tr style="background: linear-gradient(to right, #056FF6 0%, #000000 100%);color:white;">
+        <th width="15px">S.No</th>
+        <th> Users </th>
+        <th width="200px"> Password </th>
+<!--        <th style="text-align:center" width="50px">Status</th>-->
+        <th style="text-align:center" width="100px">Action</th>
+      </tr>
+    </thead>
+       {% set count = [1] %}
+        {% for flist in flists %}
+            {% set slist = flist.split() %}
+            <tr>
+                <td >{{ count }}</td>
+                <td >{{ slist[0] }}</td>
+                <td >{{ slist[3] | replace('"', '') }}</td>
+                 <td >
+                    <form style="text-align:center" >
+                        <a title="Delete user" href="delete_ruser/{{ slist[0] }}" style="color: inherit;padding-left:20px">
+                            <i class='fas fa-trash-alt' style='font-size:18px'></i></a>
+                    </form>
+                 </td>
+<!--                <td >{{ slist[3] }}</td>-->
+            </tr>
+          {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
+        {% endfor %}
+  </table></font>
+</div>
+{% endblock %}
