@@ -15,16 +15,18 @@
                   </h5>
                    <div class="card-body bg-light">
                         {% for line in filecontent %}
-                            {% if 'home' in line%}
-                                <p style="color: red;font-weight: bold;">{{ line }}</p>
+                            {% if 'Active: active' in line%}
+                                <p style="color: green;font-weight: bold;">{{ line.decode('utf-8') }}</p>
+                            {% elif 'Active: inactive' in line%}
+                                <p style="color: red;font-weight: bold;">{{ line.decode('utf-8') }}</p>
                             {% else %}
-                                <p style="font-weight: bold;">{{ line }}</p>
+                                <p style="font-weight: bold;">{{ line.decode('utf-8') }}</p>
                             {% endif %}
                         {% endfor %}
                    </div>
                </div>
 </div>
+</div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
 {% endblock %}
