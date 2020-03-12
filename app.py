@@ -41,7 +41,8 @@ def internal_error(error):
 @app.route('/rusers', methods=['GET', 'POST'])
 def radius_users():
     final_lineList = []
-    with open('/etc/raddb/users') as f:
+    # with open('/etc/raddb/users') as f:
+    with open('/etc/freeradius/3.0/users') as f:
         lineList = f.readlines()
         for line in lineList:
             if 'Cleartext-Password' in line and '#' not in line[0]:
@@ -54,13 +55,13 @@ def add_ruser():
     if request.method == 'POST':
         ruser = request.form['ruser']
         rpassword = request.form['rusrpwd']
-        with open("/etc/raddb/users", "r") as fr:
+        with open("/etc/freeradius/3.0/users", "r") as fr:
             lines = fr.readlines()
             for line in lines:
                 if ruser in line:
                     flash("User already exists!, Please add different user", 'danger')
                     return redirect(url_for('radius_users'))
-        with open("/etc/raddb/users", "w") as fw:
+        with open("/etc/freeradius/3.0/users", "w") as fw:
             fw.seek(0)
             fw.write(ruser + ' Cleartext-Password := "' + rpassword + '"\n')
             for line in lines:
@@ -72,9 +73,9 @@ def add_ruser():
 
 @app.route('/delete_ruser/<string:ruser>', methods=['GET', 'POST'])
 def delete_ruser(ruser):
-    with open("/etc/raddb/users", "r") as f:
+    with open("/etc/freeradius/3.0/users", "r") as f:
         lines = f.readlines()
-    with open("/etc/raddb/users", "w") as f:
+    with open("/etc/freeradius/3.0/users", "w") as f:
         for line in lines:
             if ruser not in line:
                 f.write(line)
@@ -85,9 +86,9 @@ def delete_ruser(ruser):
 @app.route('/rclients', methods=['GET', 'POST'])
 def radius_clients():
     final_client_list = []
-    with open('/etc/raddb/clients.conf', 'r') as fr:
+    with open('/etc/freeradius/3.0/clients.conf', 'r') as fr:
         read_lines = fr.readlines()
-    with open('/etc/raddb/clients.conf') as f:
+    with open('/etc/freeradius/3.0/clients.conf') as f:
         for num, line in enumerate(f, 1):
             if 'client' in line and '#' not in line:
                 client_line_split = line.split()
@@ -104,16 +105,16 @@ def add_rclient():
     if request.method == 'POST':
         rclient = request.form['rclient']
         rclientpaswd = request.form['rclntpwd']
-        with open("/etc/raddb/clients.conf", "r") as fr:
+        with open("/etc/freeradius/3.0/clients.conf", "r") as fr:
             lines = fr.readlines()
             for line in lines:
                 if rclient in line:
                     flash("Client already exists!, Please add different Client", 'danger')
                     return redirect(url_for('radius_clients'))
-        with open('/etc/raddb/clients.conf') as f:
+        with open('/etc/freeradius/3.0/clients.conf') as f:
             for num, line in enumerate(f, 1):
                 continue
-        with open("/etc/raddb/clients.conf", "a") as fw:
+        with open("/etc/freeradius/3.0/clients.conf", "a") as fw:
             fw.seek(num)
             fw.write('\nclient ' + rclient + '{\n     secret      = ' + rclientpaswd + '\n}')
         flash("Client added successfully!, Please restart the service", 'success')
@@ -149,14 +150,14 @@ def delete_multiple_lines(original_file, line_numbers):
 @app.route('/delete_rclient/<string:rclient>', methods=['GET', 'POST'])
 def delete_rclient(rclient):
     final_num = 0
-    with open('/etc/raddb/clients.conf', 'r') as f:
+    with open('/etc/freeradius/3.0/clients.conf', 'r') as f:
         for num, line in enumerate(f, 1):
             if rclient in line and '#' not in line:
                 final_num = num
                 break
-    sec_line = linecache.getline('clients.conf', final_num + 1)
+    sec_line = linecache.getline('/etc/freeradius/3.0/clients.conf', final_num + 1)
     if 'secret' in sec_line and '#' not in sec_line:
-        delete_multiple_lines('/etc/raddb/clients.conf', [final_num - 1, final_num, final_num + 1])
+        delete_multiple_lines('/etc/freeradius/3.0/clients.conf', [final_num - 1, final_num, final_num + 1])
         flash("Client deleted successfully!, Please restart the service", 'success')
     else:
         flash("Default format is not matching to delete, Please check manually", 'danger')
@@ -165,7 +166,8 @@ def delete_rclient(rclient):
 
 @app.route('/rservice', methods=['GET', 'POST'])
 def radius_service():
-    os.system('systemctl status radiusd.service > radius.txt')
+    # os.system('systemctl status radiusd.service > radius.txt')
+    os.system('sudo systemctl status freeradius > radius.txt')
     f = open('radius.txt', 'r')
     maven = f.readlines()
     app.logger.info(maven)
@@ -174,7 +176,7 @@ def radius_service():
 
 @app.route('/rservice/<string:status>', methods=['GET', 'POST'])
 def rservice_status(status):
-    code = os.system('systemctl' + status + 'radiusd.service')
+    code = os.system('sudo systemctl ' + status + ' freeradius')
     if code == 0:
         flash("Radius service successfully "+status+"ed", 'success')
     else:
