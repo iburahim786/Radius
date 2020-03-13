@@ -182,7 +182,7 @@ def rservice_status(status):
     if code == 0:
         flash("Radius service successfully "+status+"ed", 'success')
     else:
-        flash('Failure to execute the service command: '+status+ 'and'+ code, 'danger')
+        flash('Failure to execute the service command: '+status+ ' and '+ str(code), 'danger')
     return redirect(url_for('radius_service'))
 
 
