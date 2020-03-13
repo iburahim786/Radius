@@ -168,8 +168,10 @@ def delete_rclient(rclient):
 @app.route('/rservice', methods=['GET', 'POST'])
 def radius_service():
     # os.system('systemctl status radiusd.service > radius.txt')
-    os.system('> /home/iburahim/Radius/radius.txt')
-    os.system('service freeradius status >> /home/iburahim/Radius/radius.txt')
+    # os.system('> home/iburahim/Radius/radius.txt')
+    # os.system('service freeradius status >> /home/iburahim/Radius/radius.txt')
+    subprocess.call(["> /home/iburahim/Radius/radius.txt"], shell=True)
+    subprocess.call(["service freeradius status >> /home/iburahim/Radius/radius.txt"], shell=True)
     f = open('/home/iburahim/Radius/radius.txt', 'r')
     maven = f.readlines()
     app.logger.info(maven)
@@ -178,11 +180,12 @@ def radius_service():
 
 @app.route('/rservice/<string:status>', methods=['GET', 'POST'])
 def rservice_status(status):
-    code = os.system('service freeradius '+ status)
+    # code = os.system('service freeradius '+ status)
+    code = subprocess.call(["service freeradius " + status], shell=True)
     if code == 0:
-        flash("Radius service successfully "+status+"ed", 'success')
+        flash("Radius service successfully " + status + "ed", 'success')
     else:
-        flash('Failure to execute the service command: '+status+ ' and '+ str(code), 'danger')
+        flash('Failure to execute the service command: ' + status + ' and ' + str(code), 'danger')
     return redirect(url_for('radius_service'))
 
 
