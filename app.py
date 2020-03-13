@@ -172,10 +172,11 @@ def radius_service():
     # os.system('> home/iburahim/Radius/radius.txt')
     # os.system('service freeradius status >> /home/iburahim/Radius/radius.txt')
     subprocess.call(["> /home/iburahim/Radius/radius.txt"], shell=True)
-    subprocess.call(["service freeradius status >> /home/iburahim/Radius/radius.txt"], shell=True)
+    subprocess.call(["service freeradius status > /home/iburahim/Radius/radius.txt"], shell=True)
     f = open('/home/iburahim/Radius/radius.txt', 'r')
     maven = f.readlines()
     app.logger.info(maven)
+    flash(maven, 'danger')
     return render_template('rservice.html', filecontent=maven)
 
 
