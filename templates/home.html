@@ -1,17 +1,156 @@
 {% extends 'layout.html' %}
 
 {% block body %}
+<style>
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+</style>
 <!--  <main role="main" class="container">-->
-      <div class="jumbotron text-center">
-        <h1>Welcome to Access Manager</h1>
-        <p class="lead">UAs the demands of secure web access become more complex,
-            you may find yourself struggling to keep up with the overhead of
-            multiple access management solutions to solve your cloud, mobile, and intranet needs.
-            <br> There is no need to settle for complexity when you can have SSO everywhere through a single solution.</p>
-        {% if session.logged_in == NULL%}
-          <a href="/register" class="btn btn-primary btn-lg">Register</a>
-          <a href="/login" class="btn btn-success btn-lg">Login</a>
-        {% endif %}
+<button onclick="topFunction()" id="myBtn" title="Go to top">
+	<img alt="" src="/static/images/scrollup.png" style="height:50px; width:50px"/></button>
+      <div class="jumbotron">
+           <h3><strong>Introduction:</strong></h3>
+            <p class="text-center"><img alt="" src="/static/images/0.png" style="height:95px; width:293px"/></p>
+<p><strong>RADIUS</strong> which stands for <strong>Remote Authentication Dial In User Service</strong>, is a network protocol &ndash; a system that defines rules and conventions for communication between network devices for remote user authentication and accounting. Commonly used by Internet Service Providers (ISPs), cellular network providers, and corporate and educational networks.</p>
+
+<p>we all are using username and password to access the website/application on the internet. These pieces of information are known as principle and credentials respectively.Basically radius network uses the principle and credentials, along with third piece of information called as context, which gives a frame of reference of each login.</p>
+
+<p>The principle, credentials, and the context are used together by a network security system to identify the user(authentication), to allow or deny access to network privileges(authorization) and to track usage of parameters(accounting).</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<img alt="" src="/static/images/1.png" style="height:334px; width:956px" /></p>
+
+<p>The RADIUS protocol serves three primary functions,</p>
+
+<h3><strong>Authentication :</strong></h3>
+
+<p><strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<img alt="" src="/static/images/2.png" style="height:186px; width:600px" /></strong></p>
+
+<p>Authentication allows a Radius server to grant or denty network accessed based on the information provided by the client. If everything is checks out, the server grants the client access to the network.</p>
+
+<h3><strong>Authorization:</strong></h3>
+
+<p><strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<img alt="" src="/static/images/3.png" style="height:375px; width:800px" /></strong></p>
+
+<p>Authorization determines what an authenticated client can and can not do an Radius server. Thease rules can limit what parts of a network can be accessed, what servers/application can be used, the length of time allowed on a network, and what type of network access is allowed.</p>
+
+<h3><strong>Accounting:</strong></h3>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<img alt="" src="/static/images/4.png" style="height:308px; width:400px" /></p>
+
+<p>Accounting monitors and records the client&#39;s use of the network. Radius accounting tracks network usage, ensures the system doesn&#39;t overload and clients are billed appropriately.</p>
+
+<h3>&nbsp;</h3>
+
+<h3><strong>FreeRadius Installation and Configuration:</strong></h3>
+
+<p>We&rsquo;ll explore the steps to install&nbsp;<strong>FreeRadius</strong>&nbsp;on&nbsp;Ubuntu environment&nbsp;with minimal configuration. These installation and configuration all related to RADIUS 3+ version</p>
+
+<p><strong>FreeRadius Installation on Ubuntu:</strong></p>
+
+<pre>
+<kbd><em><code># apt-get install install freeradius</code></em></kbd></pre>
+
+<p><strong>FreeRadius Configuration:</strong></p>
+
+<p>Main configuration file of&nbsp;<strong>FreeRadius</strong>&nbsp;under&nbsp;<strong>/etc/freeradius/3.0/*</strong>&nbsp;where we add or modify all Radius configuration. Add or modify necessary configuration in the following files.</p>
+
+<ul>
+	<li>
+	<pre>
+<strong>/etc/freeradius/3.0/<code>clients.conf</code></strong></pre>
+	</li>
+	<li>
+	<pre>
+<strong>/etc/freeradius/3.0/<code>users</code></strong></pre>
+	</li>
+</ul>
+
+<p><strong>Create Radius user:</strong></p>
+
+<p>Create Radius plain text user entry in<code>&nbsp;<strong><em>/etc/freeradius/3.0/users</em></strong></code>&nbsp;file with the reference of sample configuration below.</p>
+
+<p><em>Syntax :&nbsp; &lt;username&gt; Cleartext-Password &nbsp;:= &quot;&lt;password&gt;&quot;&nbsp; &nbsp;</em></p>
+
+<p><em>e.g)&nbsp;testing Cleartext-Password &nbsp;:= &quot;password&quot;</em></p>
+
+<p><strong>Create Radius Client:</strong></p>
+
+<p>Create Radius plain text client entry in&nbsp;<strong><code><em>/etc/freeradius/3.0/clients.conf</em></code>&nbsp;</strong>file with the reference of sample configuration below.</p>
+
+<p><em>Syntax : </em></p>
+
+<p><em>client&nbsp; &lt;IP address /DNS name&gt;{<br />
+&nbsp; &nbsp; &nbsp;secret &nbsp; &nbsp; &nbsp;= &lt;password&gt;<br />
+}</em></p>
+
+<p><em>e.g)</em></p>
+
+<p><em>client 10.71.33.111{<br />
+&nbsp; &nbsp; &nbsp;secret &nbsp; &nbsp; &nbsp;= novell<br />
+}</em></p>
+
+<p><strong>Validate Radius Configuration:</strong></p>
+
+<pre>
+# <em>/usr/sbin/freeradius -d /etc/freeradius/ -CX</em></pre>
+
+<p><strong>Start and enable Radius Service:</strong></p>
+
+<pre>
+	<em># systemctl start|stop|restart|status freeradius or service freeradius start|stop|restart|status or </em>
+	<em>/etc/init.d/freeradius start|stop|restart</em>
+</pre>
+
+<p><strong>FreeRadius Troubleshooting:</strong></p>
+
+<pre>
+<code># /usr/sbin/</code><em>freeradius</em><code> -X</code>
+</pre>
+      <div class="text-center">
+		  <a href="/rusers" class="btn btn-primary btn-lg">User registration</a>
+          <a href="/rclients" class="btn btn-success btn-lg" style="margin-left:100px">Client registration</a>
       </div>
-<!--  </main>&lt;!&ndash; /.container &ndash;&gt;-->
+<hr />
+<p><strong>Source:&nbsp;</strong></p>
+
+<p>https://youtu.be/iPvM6StW5WA</p>
+
+<p><a href="https://www.tekfik.com/kb/linux/freeradiusaaa-installation-and-configuration">https://www.tekfik.com/kb/linux/freeradiusaaa-installation-and-configuration</a>&nbsp;(RADIUS 2)</p>
+
+<hr />
+<!--        {% if session.logged_in == NULL%}-->
+<!--        {% endif %}-->
+      </div>
+<script>
+//Get the button
+var mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
 {% endblock%}
