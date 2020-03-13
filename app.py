@@ -171,8 +171,6 @@ def radius_service():
     os.system('/etc/init.d/freeradius status > radius.txt')
     f = open('/home/iburahim/Radius/radius.txt', 'r')
     maven = f.readlines()
-    app.logger.info(maven)
-    flash(maven, 'danger')
     return render_template('rservice.html', filecontent=maven)
 
 
