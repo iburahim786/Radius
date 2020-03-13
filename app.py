@@ -168,7 +168,7 @@ def delete_rclient(rclient):
 @app.route('/rservice', methods=['GET', 'POST'])
 def radius_service():
     # os.system('systemctl status radiusd.service > radius.txt')
-    os.system('> home/iburahim/Radius/radius.txt')
+    os.system('> /home/iburahim/Radius/radius.txt')
     os.system('service freeradius status >> /home/iburahim/Radius/radius.txt')
     f = open('/home/iburahim/Radius/radius.txt', 'r')
     maven = f.readlines()
