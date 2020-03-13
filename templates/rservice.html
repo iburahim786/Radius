@@ -15,12 +15,12 @@
                   </h5>
                    <div class="card-body bg-light">
                         {% for line in filecontent %}
-                            {% if 'Active: active' in line%}
-                                <p style="color: green;font-weight: bold;">{{ line.decode('utf-8') }}</p>
-                            {% elif 'Active: inactive' in line%}
-                                <p style="color: red;font-weight: bold;">{{ line.decode('utf-8') }}</p>
+                            {% if ' is running' in line%}
+                                <p style="color: green;font-weight: bold;">{{ line }}</p>
+                            {% elif 'failed' in line%}
+                                <p style="color: red;font-weight: bold;">{{ line }}</p>
                             {% else %}
-                                <p style="font-weight: bold;">{{ line.decode('utf-8') }}</p>
+                                <p style="font-weight: bold;">{{ line }}</p>
                             {% endif %}
                         {% endfor %}
                    </div>
