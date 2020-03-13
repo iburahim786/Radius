@@ -1,5 +1,6 @@
 from flask import Flask, render_template, flash, url_for, request, redirect
 import os
+import linecache
 
 app = Flask(__name__)
 
@@ -168,7 +169,7 @@ def delete_rclient(rclient):
 def radius_service():
     # os.system('systemctl status radiusd.service > radius.txt')
     os.system('sudo systemctl status freeradius > radius.txt')
-    f = open('radius.txt', 'r')
+    f = open('/home/iburahim/Radius/radius.txt', 'r')
     maven = f.readlines()
     app.logger.info(maven)
     return render_template('rservice.html', filecontent=maven)
