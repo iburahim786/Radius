@@ -94,8 +94,9 @@ def radius_clients():
         for num, line in enumerate(f, 1):
             if 'client' in line and '#' not in line:
                 client_line_split = line.split()
-                sec_line = read_lines[num]
-                if 'secret' in sec_line and '#' not in sec_line:
+                ip_line = read_lines[num]
+                sec_line = read_lines[num + 1]
+                if 'secret' in sec_line and 'ipaddr' in ip_line and '#' not in sec_line:
                     secret_line_split = sec_line.split()
                     final_str = client_line_split[1].replace("{", "") + " " + secret_line_split[2]
                     final_client_list.append(final_str)
@@ -118,7 +119,7 @@ def add_rclient():
                 continue
         with open("/etc/freeradius/3.0/clients.conf", "a") as fw:
             fw.seek(num)
-            fw.write('\nclient ' + rclient + '{\n     secret      = ' + rclientpaswd + '\n}')
+            fw.write('\nclient ' + rclient + ' {\n  ipaddr = ' + rclient + '\n  secret = ' + rclientpaswd + '\n}')
         flash("Client added successfully!, Please restart the service", 'success')
         # return redirect(url_for('radius_users'))
     return redirect(url_for('radius_clients'))
@@ -159,7 +160,8 @@ def delete_rclient(rclient):
                 break
     sec_line = linecache.getline('/etc/freeradius/3.0/clients.conf', final_num + 1)
     if 'secret' in sec_line and '#' not in sec_line:
-        delete_multiple_lines('/etc/freeradius/3.0/clients.conf', [final_num - 1, final_num, final_num + 1])
+        delete_multiple_lines('/etc/freeradius/3.0/clients.conf',
+                              [final_num - 1, final_num, final_num + 1, final_num + 2])
         flash("Client deleted successfully!, Please restart the service", 'success')
     else:
         flash("Default format is not matching to delete, Please check manually", 'danger')
@@ -168,7 +170,7 @@ def delete_rclient(rclient):
 
 @app.route('/rservice', methods=['GET', 'POST'])
 def radius_service():
-    os.system('/etc/init.d/freeradius status > radius.txt')
+    subprocess.call(['/etc/init.d/freeradius status > radius.txt'], shell=True)
     f = open('/home/iburahim/Radius/radius.txt', 'r')
     maven = f.readlines()
     return render_template('rservice.html', filecontent=maven)
@@ -176,7 +178,7 @@ def radius_service():
 
 @app.route('/rservice/<string:status>', methods=['GET', 'POST'])
 def rservice_status(status):
-    code = os.system('/etc/init.d/freeradius ' + status)
+    code = subprocess.call(['/etc/init.d/freeradius ' + status], shell=True)
     if code == 0:
         flash("Radius service successfully " + status + "ed", 'success')
     else:
