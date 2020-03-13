@@ -158,8 +158,9 @@ def delete_rclient(rclient):
             if rclient in line and '#' not in line:
                 final_num = num
                 break
-    sec_line = linecache.getline('/etc/freeradius/3.0/clients.conf', final_num + 1)
-    if 'secret' in sec_line and '#' not in sec_line:
+    ip_line = linecache.getline('/etc/freeradius/3.0/clients.conf', final_num + 1)
+    sec_line = linecache.getline('/etc/freeradius/3.0/clients.conf', final_num + 2)
+    if 'secret' in sec_line and 'ipaddr' in ip_line and '#' not in sec_line:
         delete_multiple_lines('/etc/freeradius/3.0/clients.conf',
                               [final_num - 1, final_num, final_num + 1, final_num + 2])
         flash("Client deleted successfully!, Please restart the service", 'success')
