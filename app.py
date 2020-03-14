@@ -171,7 +171,8 @@ def delete_rclient(rclient):
 
 @app.route('/rservice', methods=['GET', 'POST'])
 def radius_service():
-    subprocess.call(['/etc/init.d/freeradius status > radius.txt'], shell=True)
+    subprocess.call(['> /home/iburahim/Radius/radius.txt'], shell=True)
+    subprocess.call(['service freeradius status > /home/iburahim/Radius/radius.txt'], shell=True)
     f = open('/home/iburahim/Radius/radius.txt', 'r')
     maven = f.readlines()
     return render_template('rservice.html', filecontent=maven)
@@ -179,7 +180,7 @@ def radius_service():
 
 @app.route('/rservice/<string:status>', methods=['GET', 'POST'])
 def rservice_status(status):
-    code = subprocess.call(['/etc/init.d/freeradius ' + status], shell=True)
+    code = subprocess.call(['service freeradius ' + status], shell=True)
     if code == 0:
         flash("Radius service successfully " + status + "ed", 'success')
     else:
