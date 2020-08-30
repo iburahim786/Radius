@@ -186,7 +186,10 @@ def radius_service():
 def rservice_status(status):
     code = subprocess.call(['systemctl ' + status+ ' freeradius.service'], shell=True)
     if code == 0:
-        flash("Radius service successfully " + status + "ed", 'success')
+        if status == 'stop':
+            flash("Radius service successfully " + status + "ped", 'success')
+        else:
+            flash("Radius service successfully " + status + "ed", 'success')
     else:
         flash('Failure to execute the service command: ' + status + ' and ' + str(code), 'danger')
     return redirect(url_for('radius_service'))
