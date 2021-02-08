@@ -7,7 +7,7 @@ Flask-LoginManager==1.1.6
 Flask-Mail==0.9.1
 Flask-WTF==0.14.2
 gunicorn==19.10.0
-httplib2==0.14.0
+httplib2==0.19.0
 itsdangerous==1.1.0
 Jinja2==2.10.3
 passlib==1.7.2
